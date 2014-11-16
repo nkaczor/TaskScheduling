@@ -1,0 +1,5 @@
+c:\users\natalia\Documents\Visual Studio 2013\Projects\Genetic_Algorithm_Scheduling\Genetic_Algorithm_Scheduling\bin\Debug\Genetic_Algorithm_Scheduling.exe.config
+c:\users\natalia\Documents\Visual Studio 2013\Projects\Genetic_Algorithm_Scheduling\Genetic_Algorithm_Scheduling\bin\Debug\Genetic_Algorithm_Scheduling.exe
+c:\users\natalia\Documents\Visual Studio 2013\Projects\Genetic_Algorithm_Scheduling\Genetic_Algorithm_Scheduling\bin\Debug\Genetic_Algorithm_Scheduling.pdb
+c:\users\natalia\Documents\Visual Studio 2013\Projects\Genetic_Algorithm_Scheduling\Genetic_Algorithm_Scheduling\obj\Debug\Genetic_Algorithm_Scheduling.exe
+c:\users\natalia\Documents\Visual Studio 2013\Projects\Genetic_Algorithm_Scheduling\Genetic_Algorithm_Scheduling\obj\Debug\Genetic_Algorithm_Scheduling.pdb

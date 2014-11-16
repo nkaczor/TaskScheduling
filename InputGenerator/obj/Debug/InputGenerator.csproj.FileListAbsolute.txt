@@ -1,0 +1,6 @@
+C:\Users\Natalia\Documents\Visual Studio 2013\Projects\Genetic_Algorithm_Scheduling\InputGenerator\obj\Debug\InputGenerator.csprojResolveAssemblyReference.cache
+C:\Users\Natalia\Documents\Visual Studio 2013\Projects\Genetic_Algorithm_Scheduling\InputGenerator\bin\Debug\InputGenerator.exe.config
+C:\Users\Natalia\Documents\Visual Studio 2013\Projects\Genetic_Algorithm_Scheduling\InputGenerator\bin\Debug\InputGenerator.exe
+C:\Users\Natalia\Documents\Visual Studio 2013\Projects\Genetic_Algorithm_Scheduling\InputGenerator\bin\Debug\InputGenerator.pdb
+C:\Users\Natalia\Documents\Visual Studio 2013\Projects\Genetic_Algorithm_Scheduling\InputGenerator\obj\Debug\InputGenerator.exe
+C:\Users\Natalia\Documents\Visual Studio 2013\Projects\Genetic_Algorithm_Scheduling\InputGenerator\obj\Debug\InputGenerator.pdb
