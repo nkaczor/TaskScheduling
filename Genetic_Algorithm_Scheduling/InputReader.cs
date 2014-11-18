@@ -47,18 +47,25 @@ namespace Genetic_Algorithm_Scheduling
             using (var sr = new StreamReader(_inputFile))
             {
                 moveToIntervals(sr);
-
+                int startFree = 0;
                 while (!sr.EndOfStream)
                 {
                     string tmp = sr.ReadLine();
                     string[] intervalInfo = tmp.Split(';');
                     int length = Convert.ToInt32(intervalInfo[1]);
                     int startTime = Convert.ToInt32(intervalInfo[2]);
+                    if (startFree < startTime)
+                        intervals.Add(new Interval(Interval.TypeOfInterval.Free, startTime - startFree, startFree));
                     intervals.Add(new Interval(Interval.TypeOfInterval.Break, length, startTime));
+                    startFree = startTime + length;
+
                 }
+                
             }
             return intervals;
         }
+
+      
 
         private void moveToIntervals(StreamReader sr)
         {
