@@ -10,6 +10,9 @@ namespace Genetic_Algorithm_Scheduling
     {
         static void Main(string[] args)
         {
+            GeneticAlgorithm ga= new GeneticAlgorithm("test.in");
+            ga.Run();
+            Console.ReadLine();
         }
     }
 }
