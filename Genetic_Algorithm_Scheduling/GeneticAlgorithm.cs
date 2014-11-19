@@ -15,8 +15,7 @@ namespace Genetic_Algorithm_Scheduling
         public GeneticAlgorithm(string inputFile)
         {
             var ir= new InputReader(inputFile);
-            Jobs = ir.FindJobs();
-            
+            Jobs = ir.FindJobs();  
             Breaks = ir.FindBreaks();
 
         }
@@ -24,7 +23,11 @@ namespace Genetic_Algorithm_Scheduling
         public void Run()
         {
            var solutionsGenerator= new SolutionsGenerator(Jobs, Breaks);
-            Solutions = solutionsGenerator.Generate(50);
+           Solutions = solutionsGenerator.Generate(50);
+           GeneticOperator geneticOperator= new GeneticOperator();
+           List<Solution> newSolutions=geneticOperator.CreateNewPopulation(Solutions, 200);
+
+           
         }
     }
 }
