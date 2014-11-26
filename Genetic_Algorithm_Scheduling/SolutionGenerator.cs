@@ -29,7 +29,7 @@ namespace Genetic_Algorithm_Scheduling
 
         private Solution generateOne()
         {
-            RandomSolution newSolution= new RandomSolution(_breaks);
+            Solution newSolution= new Solution(_breaks,_jobs);
             List<int> unassignedJobs= new List<int>(); 
             unassignedJobs.AddRange(Enumerable.Range(0, _jobs.Count));
             Random rnd= new Random();
@@ -38,7 +38,8 @@ namespace Genetic_Algorithm_Scheduling
 
                 int randomJob = unassignedJobs[rnd.Next(unassignedJobs.Count)];
                 unassignedJobs.Remove(randomJob);
-                newSolution.AddJob(_jobs[randomJob]);
+                
+                newSolution.AddJobAndId(_jobs[randomJob]);
 
             }
 

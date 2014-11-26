@@ -42,12 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GeneticAlgorithm.cs" />
+    <Compile Include="GeneticOperator.cs" />
     <Compile Include="InputReader.cs" />
     <Compile Include="Interval.cs" />
     <Compile Include="Job.cs" />
+    <Compile Include="Mutator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandomSolution.cs" />
     <Compile Include="Solution.cs" />
     <Compile Include="SolutionGenerator.cs" />
   </ItemGroup>
