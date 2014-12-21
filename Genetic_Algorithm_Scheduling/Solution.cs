@@ -33,29 +33,7 @@ namespace Genetic_Algorithm_Scheduling
         }
 
      
-
-        public void AddJob(Job job)
-        {
-
-            
-
-            SortedSet<Interval> first;
-            SortedSet<Interval> second;
-            if (job.FirstProcessor == Job.Processor.One)
-            {
-                first = ProcessorOne;
-                second = ProcessorTwo;
-            }
-            else
-            {
-                 first = ProcessorTwo;
-                second = ProcessorOne;
-            }
-
-            int endTime = addFirstOperation(job, first);
-            addSecondOperation(job, second, endTime);
-
-        }
+    
         private void addSecondOperation(Job job, SortedSet<Interval> second, int startTimeForSecond)
         {
             Interval candidate = second.FirstOrDefault(x => x.StartTime>startTimeForSecond && x.Type == Interval.TypeOfInterval.Free && x.Length >= job.FirstTime);
@@ -106,7 +84,7 @@ namespace Genetic_Algorithm_Scheduling
 
 
 
-        public Solution CloneOnlyOrderList()
+        public Solution Clone()
         {
             Solution newSolution=new Solution(_breaks,_jobs);
             foreach (var task in TaskOrder)
@@ -121,14 +99,66 @@ namespace Genetic_Algorithm_Scheduling
 
             foreach (int task in TaskOrder)
             {
-                AddJob(_jobs[task]);
+                if(task>0) AddFirst(_jobs[task-1]);
+                else AddSecond(_jobs[-task-1]);
             }
         }
 
-        public void AddJobAndId(Job job)
+        public void AddFirst(Job job)
         {
             TaskOrder.Add(job.Id);
-            AddJob(job);
+
+            SortedSet<Interval> first;
+           
+            if (job.FirstProcessor == Job.Processor.One)
+            {
+                first = ProcessorOne;
+             
+            }
+            else
+            {
+                first = ProcessorTwo;         
+            }
+
+            job.FirstEndsAt = addFirstOperation(job, first);
+           
+        }
+        public void AddSecond(Job job)
+        {
+
+            TaskOrder.Add(-job.Id);
+            SortedSet<Interval> second;
+            if (job.FirstProcessor == Job.Processor.One)
+            {
+                
+                second = ProcessorTwo;
+            }
+            else
+            {
+               
+                second = ProcessorOne;
+            }
+
+            
+            addSecondOperation(job, second, job.FirstEndsAt);
+        }
+
+        internal void CheckAndFix()
+        {
+            bool[] first= new bool[_jobs.Count + 1];
+            first.Initialize();
+            for (int i = 0; i < TaskOrder.Count; i++)
+            {
+                int it = TaskOrder[i];
+                if (it > 0 && first[it] == false) first[it] = true;
+                else if (it > 0) TaskOrder[i] = -it;
+                else if (first[-it] == false) {
+                first[it] = true;
+                TaskOrder[i] = -it;
+            }
+
+        }
+
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Genetic_Algorithm_Scheduling
 {
@@ -31,16 +32,26 @@ namespace Genetic_Algorithm_Scheduling
         {
             Solution newSolution= new Solution(_breaks,_jobs);
             List<int> unassignedJobs= new List<int>(); 
-            unassignedJobs.AddRange(Enumerable.Range(0, _jobs.Count));
+            unassignedJobs.AddRange(Enumerable.Range(1, _jobs.Count));   //dodatnie liczby symbolizuja pierwsze zadania, a ujemne drugie
             Random rnd= new Random();
             while (unassignedJobs.Count > 0)
             {
 
                 int randomJob = unassignedJobs[rnd.Next(unassignedJobs.Count)];
-                unassignedJobs.Remove(randomJob);
-                
-                newSolution.AddJobAndId(_jobs[randomJob]);
 
+                if (randomJob > 0)
+                {
+                    unassignedJobs.Remove(randomJob);
+                    unassignedJobs.Add(-randomJob);
+                    newSolution.AddFirst(_jobs[randomJob - 1]);
+                }
+                else
+                {
+                    randomJob = -randomJob;
+                    unassignedJobs.Remove(randomJob);
+                    
+                    newSolution.AddSecond(_jobs[randomJob - 1]);
+                }
             }
 
             return newSolution;

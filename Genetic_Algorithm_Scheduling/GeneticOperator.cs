@@ -7,13 +7,13 @@ namespace Genetic_Algorithm_Scheduling
 {
     class GeneticOperator
     {
-        private readonly List<Solution> _oldsolutions;
+        private readonly List<Solution> _oldSolutions;
         private List<Solution> _newSolutions;
         private Random _rnd;
         private Mutator _mutator;
         public GeneticOperator(List<Solution> oldSolutions)
         {
-            _oldsolutions = oldSolutions;
+            _oldSolutions = oldSolutions;
             _newSolutions = new List<Solution>();
             _rnd = new Random();
             _mutator = new Mutator(12);
@@ -47,8 +47,8 @@ namespace Genetic_Algorithm_Scheduling
 
         private void mutateSomething()
         {
-            int randomIndex = _rnd.Next(_oldsolutions.Count);
-            Solution solutionToMutate = _oldsolutions[randomIndex];
+            int randomIndex = _rnd.Next(_oldSolutions.Count);
+            Solution solutionToMutate = _oldSolutions[randomIndex];
             
             _newSolutions.Add(_mutator.Mutate(solutionToMutate));
         }

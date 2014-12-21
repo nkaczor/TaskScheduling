@@ -12,7 +12,7 @@ namespace Genetic_Algorithm_Scheduling
         public int ChangeFactor { get; set; }
         public Solution Mutate(Solution solutionToMutate)
         {
-            _mutatedSolution = solutionToMutate.CloneOnlyOrderList();
+            _mutatedSolution = solutionToMutate.Clone();
             _numberOfTask = solutionToMutate.TaskOrder.Count();
             int changes = (_numberOfTask*ChangeFactor)/100;
            
@@ -28,8 +28,11 @@ namespace Genetic_Algorithm_Scheduling
         {
             Random rnd = new Random();
             int index = rnd.Next(_numberOfTask);
-            _mutatedSolution.TaskOrder.Remove(index);
-            _mutatedSolution.TaskOrder.Add(index);
+            int item = _mutatedSolution.TaskOrder[index];
+            _mutatedSolution.TaskOrder.Remove(item);
+            index = rnd.Next(_numberOfTask-1);
+            _mutatedSolution.TaskOrder.Insert(index, item);
+            _mutatedSolution.CheckAndFix();
         }
 
         public Mutator(int changeFactor=4)
