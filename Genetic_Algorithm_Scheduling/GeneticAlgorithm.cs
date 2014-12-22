@@ -22,11 +22,12 @@ namespace Genetic_Algorithm_Scheduling
 
         public void Run()
         {
+            
            var solutionsGenerator= new SolutionsGenerator(Jobs, Breaks);
-           Solutions = solutionsGenerator.Generate(50);
+           Solutions = solutionsGenerator.Generate(50);       
            GeneticOperator geneticOperator= new GeneticOperator(Solutions);
            List<Solution> newSolutions=geneticOperator.CreateNewPopulation(200);
-
+            Console.WriteLine("Bye");
            
         }
     }

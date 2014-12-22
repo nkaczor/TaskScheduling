@@ -30,26 +30,32 @@ namespace Genetic_Algorithm_Scheduling
 
         private Solution generateOne()
         {
+            
             Solution newSolution= new Solution(_breaks,_jobs);
-            List<int> unassignedJobs= new List<int>(); 
+            List<int> unassignedJobs= new List<int>();
+            Console.WriteLine(_jobs.Count);
             unassignedJobs.AddRange(Enumerable.Range(1, _jobs.Count));   //dodatnie liczby symbolizuja pierwsze zadania, a ujemne drugie
             Random rnd= new Random();
             while (unassignedJobs.Count > 0)
             {
+                
 
                 int randomJob = unassignedJobs[rnd.Next(unassignedJobs.Count)];
 
                 if (randomJob > 0)
                 {
+                    newSolution.TaskOrder.Add(randomJob);
                     unassignedJobs.Remove(randomJob);
                     unassignedJobs.Add(-randomJob);
                     newSolution.AddFirst(_jobs[randomJob - 1]);
+                    
                 }
                 else
                 {
-                    randomJob = -randomJob;
-                    unassignedJobs.Remove(randomJob);
                     
+                    newSolution.TaskOrder.Add(randomJob);
+                    unassignedJobs.Remove(randomJob);
+                    randomJob = -randomJob;
                     newSolution.AddSecond(_jobs[randomJob - 1]);
                 }
             }

@@ -87,6 +87,7 @@ namespace Genetic_Algorithm_Scheduling
         public Solution Clone()
         {
             Solution newSolution=new Solution(_breaks,_jobs);
+            newSolution.TaskOrder= new List<int>();
             foreach (var task in TaskOrder)
             {
                 newSolution.TaskOrder.Add(task);
@@ -96,17 +97,21 @@ namespace Genetic_Algorithm_Scheduling
 
         public void GenerateProcessorsTimeline()
         {
+            
 
-            foreach (int task in TaskOrder)
+            for (int i = 0; i < TaskOrder.Count; i++)
             {
+               // Console.WriteLine(i+" " + TaskOrder.Count);
+                var task = TaskOrder[i];
                 if(task>0) AddFirst(_jobs[task-1]);
                 else AddSecond(_jobs[-task-1]);
             }
+         
         }
 
         public void AddFirst(Job job)
         {
-            TaskOrder.Add(job.Id);
+            //TaskOrder.Add(job.Id);
 
             SortedSet<Interval> first;
            
@@ -126,7 +131,7 @@ namespace Genetic_Algorithm_Scheduling
         public void AddSecond(Job job)
         {
 
-            TaskOrder.Add(-job.Id);
+            //TaskOrder.Add(-job.Id);
             SortedSet<Interval> second;
             if (job.FirstProcessor == Job.Processor.One)
             {
@@ -153,7 +158,7 @@ namespace Genetic_Algorithm_Scheduling
                 if (it > 0 && first[it] == false) first[it] = true;
                 else if (it > 0) TaskOrder[i] = -it;
                 else if (first[-it] == false) {
-                first[it] = true;
+                first[-it] = true;
                 TaskOrder[i] = -it;
             }
 

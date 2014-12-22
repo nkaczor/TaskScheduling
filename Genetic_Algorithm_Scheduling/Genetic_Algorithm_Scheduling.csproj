@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CrossoverOperator.cs" />
     <Compile Include="GeneticAlgorithm.cs" />
     <Compile Include="GeneticOperator.cs" />
     <Compile Include="InputReader.cs" />
