@@ -12,11 +12,13 @@ namespace Genetic_Algorithm_Scheduling
         public SortedSet<Interval> ProcessorTwo { get; set; }
         public List<int> TaskOrder { get; set; }
         private readonly List<Job> _jobs;
-        private SortedSet<Interval> _breaks; 
+        private SortedSet<Interval> _breaks;
+        public int EndTime { get; set; }
         public Solution()
         {
             
         }
+        
          public Solution(SortedSet<Interval> breaks, List<Job> jobs)
         {
            ProcessorOne=new SortedSet<Interval>();
@@ -98,7 +100,7 @@ namespace Genetic_Algorithm_Scheduling
         public void GenerateProcessorsTimeline()
         {
             
-
+            
             for (int i = 0; i < TaskOrder.Count; i++)
             {
                // Console.WriteLine(i+" " + TaskOrder.Count);
@@ -106,7 +108,10 @@ namespace Genetic_Algorithm_Scheduling
                 if(task>0) AddFirst(_jobs[task-1]);
                 else AddSecond(_jobs[-task-1]);
             }
-         
+            int endTime1 = ProcessorOne.Last(x => x.Type == Interval.TypeOfInterval.Task).EndTime;
+            int endTime2 = ProcessorTwo.Last(x => x.Type == Interval.TypeOfInterval.Task).EndTime;
+            EndTime = (endTime1>endTime2)? endTime1:endTime2;
+
         }
 
         public void AddFirst(Job job)

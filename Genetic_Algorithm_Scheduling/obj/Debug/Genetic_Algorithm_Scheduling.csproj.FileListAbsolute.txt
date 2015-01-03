@@ -4,3 +4,9 @@ c:\users\natalia\Documents\Visual Studio 2013\Projects\Genetic_Algorithm_Schedul
 c:\users\natalia\Documents\Visual Studio 2013\Projects\Genetic_Algorithm_Scheduling\Genetic_Algorithm_Scheduling\obj\Debug\Genetic_Algorithm_Scheduling.exe
 c:\users\natalia\Documents\Visual Studio 2013\Projects\Genetic_Algorithm_Scheduling\Genetic_Algorithm_Scheduling\obj\Debug\Genetic_Algorithm_Scheduling.pdb
 C:\Users\Natalia\Documents\Visual Studio 2013\Projects\Genetic_Algorithm_Scheduling\Genetic_Algorithm_Scheduling\obj\Debug\Genetic_Algorithm_Scheduling.csprojResolveAssemblyReference.cache
+C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\Genetic_Algorithm_Scheduling\bin\Debug\Genetic_Algorithm_Scheduling.exe.config
+C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\Genetic_Algorithm_Scheduling\bin\Debug\Genetic_Algorithm_Scheduling.exe
+C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\Genetic_Algorithm_Scheduling\bin\Debug\Genetic_Algorithm_Scheduling.pdb
+C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\Genetic_Algorithm_Scheduling\obj\Debug\Genetic_Algorithm_Scheduling.exe
+C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\Genetic_Algorithm_Scheduling\obj\Debug\Genetic_Algorithm_Scheduling.pdb
+C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\Genetic_Algorithm_Scheduling\obj\Debug\Genetic_Algorithm_Scheduling.csprojResolveAssemblyReference.cache

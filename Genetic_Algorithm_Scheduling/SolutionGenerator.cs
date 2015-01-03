@@ -10,12 +10,12 @@ namespace Genetic_Algorithm_Scheduling
     {
         private readonly List<Job> _jobs;
         private readonly SortedSet<Interval> _breaks;
-
+        private Random _rnd;
         public SolutionsGenerator(List<Job> jobs, SortedSet<Interval> breaks)
         {
-            // TODO: Complete member initialization
             _jobs = jobs;
             _breaks = breaks;
+            _rnd= new Random();
         }
 
         public List<Solution> Generate(int numberOfSolutions)
@@ -33,21 +33,19 @@ namespace Genetic_Algorithm_Scheduling
             
             Solution newSolution= new Solution(_breaks,_jobs);
             List<int> unassignedJobs= new List<int>();
-            Console.WriteLine(_jobs.Count);
             unassignedJobs.AddRange(Enumerable.Range(1, _jobs.Count));   //dodatnie liczby symbolizuja pierwsze zadania, a ujemne drugie
-            Random rnd= new Random();
+            
             while (unassignedJobs.Count > 0)
             {
                 
 
-                int randomJob = unassignedJobs[rnd.Next(unassignedJobs.Count)];
+                int randomJob = unassignedJobs[_rnd.Next(unassignedJobs.Count)];
 
                 if (randomJob > 0)
                 {
                     newSolution.TaskOrder.Add(randomJob);
                     unassignedJobs.Remove(randomJob);
                     unassignedJobs.Add(-randomJob);
-                    newSolution.AddFirst(_jobs[randomJob - 1]);
                     
                 }
                 else
@@ -55,8 +53,7 @@ namespace Genetic_Algorithm_Scheduling
                     
                     newSolution.TaskOrder.Add(randomJob);
                     unassignedJobs.Remove(randomJob);
-                    randomJob = -randomJob;
-                    newSolution.AddSecond(_jobs[randomJob - 1]);
+                    
                 }
             }
 

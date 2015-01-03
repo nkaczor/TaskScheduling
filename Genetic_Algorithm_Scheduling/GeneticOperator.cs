@@ -59,6 +59,9 @@ namespace Genetic_Algorithm_Scheduling
             Solution child1, child2;
             
             _crossoverOperator.DoCrossover(out child1, out child2);
+            child1.GenerateProcessorsTimeline();
+            child2.GenerateProcessorsTimeline();
+            //Console.Write(child1.EndTime + " ");
             _newSolutions.Add(child1);
             _newSolutions.Add(child2);
 
@@ -69,8 +72,12 @@ namespace Genetic_Algorithm_Scheduling
             
             int randomIndex = _rnd.Next(_oldSolutions.Count);
             Solution solutionToMutate = _oldSolutions[randomIndex];
+            Solution newSolution = _mutator.Mutate(solutionToMutate);
+            newSolution.GenerateProcessorsTimeline();
+            //Console.Write(solutionToMutate.EndTime + " ");
             
-            _newSolutions.Add(_mutator.Mutate(solutionToMutate));
+            _newSolutions.Add(newSolution);
+            
         }
     }
-}
+} 
