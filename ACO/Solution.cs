@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Genetic_Algorithm_Scheduling
+namespace ACO
 {
     public class Solution
     {
@@ -18,7 +16,7 @@ namespace Genetic_Algorithm_Scheduling
         {
             ProcessorOne = new SortedSet<Interval>();
             ProcessorTwo = new SortedSet<Interval>();
-            TaskOrder = new List<int>();
+
             _breaks = breaks;
             _jobs = jobs;
             foreach (var interval in breaks)
@@ -35,11 +33,15 @@ namespace Genetic_Algorithm_Scheduling
 
         private void addSecondOperation(Job job, SortedSet<Interval> second, int startTimeForSecond)
         {
+            var last = second.LastOrDefault(x => x.Type == Interval.TypeOfInterval.Task);
+            var lastTime = (last == null) ? 0 : last.EndTime;
+            lastTime = (lastTime > startTimeForSecond) ? lastTime : startTimeForSecond;
             var candidate =
                 second.FirstOrDefault(
-                    x =>
-                        x.StartTime > startTimeForSecond && x.Type == Interval.TypeOfInterval.Free &&
-                        x.Length >= job.FirstTime);
+                    x => x.EndTime >= lastTime &&
+                         x.Type == Interval.TypeOfInterval.Free &&
+                         (x.StartTime > lastTime && x.EndTime - x.StartTime >= job.SecondTime ||
+                          x.StartTime <= lastTime && x.EndTime - lastTime >= job.SecondTime));
 
             if (candidate == null) //dodajemy na koniec
             {
@@ -49,22 +51,45 @@ namespace Genetic_Algorithm_Scheduling
             }
             else
             {
+                int endTime;
                 second.Remove(candidate);
-                second.Add(new Interval(Interval.TypeOfInterval.Task, job.SecondTime, candidate.StartTime));
+                Interval taskInterval;
+                if (lastTime > candidate.StartTime)
+                {
+                    //ewentualnie dodac free
+                    endTime = lastTime + job.FirstTime;
+                    taskInterval = new Interval(Interval.TypeOfInterval.Task, job.SecondTime, lastTime);
+                }
+                else
+                {
+                    endTime = candidate.StartTime + job.FirstTime;
+                    taskInterval = new Interval(Interval.TypeOfInterval.Task, job.SecondTime, candidate.StartTime);
+                }
 
-                if (candidate.EndTime > candidate.StartTime + job.SecondTime)
+
+                second.Add(taskInterval);
+
+                if (candidate.EndTime > endTime)
                     second.Add(
-                        new Interval(Interval.TypeOfInterval.Free, candidate.Length - job.SecondTime,
-                            candidate.StartTime + job.SecondTime)
+                        new Interval(Interval.TypeOfInterval.Free, candidate.EndTime - endTime, endTime)
                         );
+
             }
         }
+        
 
         private int addFirstOperation(Job job, SortedSet<Interval> first)
         {
             int endTime;
+            var last = first.LastOrDefault(x => x.Type == Interval.TypeOfInterval.Task);
+            var lastTime = (last == null) ? 0 : last.EndTime;
+
             var candidate =
-                first.FirstOrDefault(x => x.Type == Interval.TypeOfInterval.Free && x.Length >= job.FirstTime);
+                first.FirstOrDefault(x =>
+                    x.EndTime >= lastTime &&
+                    x.Type == Interval.TypeOfInterval.Free &&
+                    (x.StartTime > lastTime && x.EndTime - x.StartTime >= job.FirstTime ||
+                     x.StartTime <= lastTime && x.EndTime - lastTime >= job.FirstTime));
 
             if (candidate == null)
             {
@@ -76,12 +101,25 @@ namespace Genetic_Algorithm_Scheduling
             else
             {
                 first.Remove(candidate);
-                var taskInterval = new Interval(Interval.TypeOfInterval.Task, job.FirstTime, candidate.StartTime);
+                Interval taskInterval;
+                if (lastTime > candidate.StartTime)
+                {
+                    //ewentualnie dodac free
+                    endTime = lastTime + job.FirstTime;
+                    taskInterval = new Interval(Interval.TypeOfInterval.Task, job.FirstTime, lastTime);
+                }
+                else
+                {
+                    endTime = candidate.StartTime + job.FirstTime;
+                    taskInterval = new Interval(Interval.TypeOfInterval.Task, job.FirstTime, candidate.StartTime);
+                }
+
+
                 first.Add(taskInterval);
-                endTime = candidate.StartTime + job.FirstTime;
-                if (candidate.EndTime > candidate.StartTime + job.FirstTime)
+
+                if (candidate.EndTime > endTime)
                     first.Add(
-                        new Interval(Interval.TypeOfInterval.Free, candidate.Length - job.FirstTime, endTime)
+                        new Interval(Interval.TypeOfInterval.Free, candidate.EndTime - endTime, endTime)
                         );
             }
             return endTime;
@@ -104,8 +142,8 @@ namespace Genetic_Algorithm_Scheduling
             {
                 // Console.WriteLine(i+" " + TaskOrder.Count);
                 var task = TaskOrder[i];
-                if (task > 0) AddFirst(_jobs[task - 1]);
-                else AddSecond(_jobs[-task - 1]);
+                if (task <= _jobs.Count) AddFirst(_jobs[task - 1]);
+                else AddSecond(_jobs[task - _jobs.Count - 1]);
             }
             var endTime1 = ProcessorOne.Last(x => x.Type == Interval.TypeOfInterval.Task).EndTime;
             var endTime2 = ProcessorTwo.Last(x => x.Type == Interval.TypeOfInterval.Task).EndTime;
@@ -145,48 +183,6 @@ namespace Genetic_Algorithm_Scheduling
 
 
             addSecondOperation(job, second, job.FirstEndsAt);
-        }
-
-        public void CheckAndFix()
-        {
-            var first = new bool[_jobs.Count + 1];
-            first.Initialize();
-            for (var i = 0; i < TaskOrder.Count; i++)
-            {
-                var it = TaskOrder[i];
-                if (it > 0 && first[it] == false) first[it] = true;
-                else if (it > 0) TaskOrder[i] = -it;
-                else if (first[-it] == false)
-                {
-                    first[-it] = true;
-                    TaskOrder[i] = -it;
-                }
-            }
-        //    int amount=TaskOrder.Count;
-        //    var first = new bool[_jobs.Count + 1];
-        //    int i=0;
-        //    while(i<TaskOrder.Count)
-        //    {
-        //        var it = TaskOrder[i];
-        //        if (it > 0 && first[it] == false) {first[it] = true;
-        //            i++;
-        //        }
-
-        //        else if (it < 0 && first[-it] == false)
-        //        {
-        //            TaskOrder.Remove(it);
-        //            first[-it] = true;
-
-        //        }
-        //        else if (it > 0)
-        //        {
-        //            TaskOrder.Insert(i + 1, -it);
-        //            i++;
-        //            first[it] = true;
-        //        }
-        //        else i++;
-        //}
-           
         }
     }
 }

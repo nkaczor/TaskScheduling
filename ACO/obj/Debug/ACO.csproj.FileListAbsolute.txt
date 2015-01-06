@@ -1,0 +1,6 @@
+C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\ACO\bin\Debug\ACO.exe.config
+C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\ACO\obj\Debug\ACO.csprojResolveAssemblyReference.cache
+C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\ACO\bin\Debug\ACO.exe
+C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\ACO\bin\Debug\ACO.pdb
+C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\ACO\obj\Debug\ACO.exe
+C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\ACO\obj\Debug\ACO.pdb

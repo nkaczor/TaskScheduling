@@ -56,7 +56,7 @@ namespace Genetic_Algorithm_Scheduling
                     
                 }
             }
-
+            newSolution.GenerateProcessorsTimeline();
             return newSolution;
         }
     }

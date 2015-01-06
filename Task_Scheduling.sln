@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genetic_Algorithm_Schedulin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputGenerator", "InputGenerator\InputGenerator.csproj", "{E2698A46-FA1D-4AA2-A670-451D33C9C2F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACO", "ACO\ACO.csproj", "{5D3FE77C-854A-48E1-94B2-FB6FDEB892DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E2698A46-FA1D-4AA2-A670-451D33C9C2F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2698A46-FA1D-4AA2-A670-451D33C9C2F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2698A46-FA1D-4AA2-A670-451D33C9C2F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D3FE77C-854A-48E1-94B2-FB6FDEB892DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D3FE77C-854A-48E1-94B2-FB6FDEB892DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D3FE77C-854A-48E1-94B2-FB6FDEB892DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D3FE77C-854A-48E1-94B2-FB6FDEB892DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

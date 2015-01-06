@@ -4,17 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InputGenerator
+namespace ACO
 {
     class Program
     {
         static void Main(string[] args)
         {
-           Generator gen = new Generator();
-            gen.Generate(10,20,"test.in");
-            Console.Write("OK");
+            AcoAlgorithm ga = new AcoAlgorithm("test.in");
+            ga.Run();
             Console.ReadLine();
-
         }
     }
 }

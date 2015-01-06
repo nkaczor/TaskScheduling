@@ -35,7 +35,7 @@ namespace Genetic_Algorithm_Scheduling
                 else
                 {
                     crossoverSomething();
-                    numberOfChildren = numberOfChildren - 2; // z krzyżowania mamy 2 potomków
+                    numberOfChildren = numberOfChildren - 1; // z krzyżowania mamy 2 potomków
                 }
 
             }
@@ -61,7 +61,7 @@ namespace Genetic_Algorithm_Scheduling
             _crossoverOperator.DoCrossover(out child1, out child2);
             child1.GenerateProcessorsTimeline();
             child2.GenerateProcessorsTimeline();
-            //Console.Write(child1.EndTime + " ");
+           
             _newSolutions.Add(child1);
             _newSolutions.Add(child2);
 

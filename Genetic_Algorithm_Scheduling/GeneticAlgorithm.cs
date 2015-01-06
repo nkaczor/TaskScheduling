@@ -25,18 +25,19 @@ namespace Genetic_Algorithm_Scheduling
 
 
             var solutionsGenerator = new SolutionsGenerator(Jobs, Breaks);
-            Solutions = solutionsGenerator.Generate(50);
+            Solutions = solutionsGenerator.Generate(200);
 
 
             var s = new Stopwatch();
             s.Start();
             while (s.Elapsed < TimeSpan.FromSeconds(seconds))
             {
-                var geneticOperator = new GeneticOperator(Solutions);
-                Solutions = geneticOperator.CreateNewPopulation(200);
+                
                 
                 var roulette = new Roulette(Solutions);
-                Solutions = roulette.SpinTheWheel(50);
+                Solutions = roulette.SpinTheWheel(30);
+                var geneticOperator = new GeneticOperator(Solutions);
+                Solutions = geneticOperator.CreateNewPopulation(200);
                 int min = Solutions.Min(sol => sol.EndTime);
                 Console.WriteLine(min);
             }
