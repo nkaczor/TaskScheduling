@@ -8,7 +8,7 @@ namespace ACO
     {
         private readonly SortedSet<Interval> _breaks;
         private readonly List<Job> _jobs;
-        private int[] _firstEndsAt; 
+       // private int[] _firstEndsAt; 
         public Solution()
         {
         }
@@ -20,7 +20,7 @@ namespace ACO
             
             _breaks = breaks;
             _jobs = jobs;
-             _firstEndsAt=new int[jobs.Count];
+             //_firstEndsAt=new int[jobs.Count+1];
            
         }
         public List<int> TaskOrder { get; set; }
@@ -31,6 +31,7 @@ namespace ACO
 
         private void addSecondOperation(Job job, ref int second, int startTimeForSecond)
         {
+           
             int startTime = (second>startTimeForSecond)?second:startTimeForSecond;
           
             Interval nearestBreak = _breaks.FirstOrDefault(x => x.StartTime >= startTime);
@@ -53,6 +54,7 @@ namespace ACO
 
         private int addFirstOperation(Job job, ref int first)
         {
+            
             int startTime = first;
             Interval nearestBreak= _breaks.FirstOrDefault(x => x.StartTime >= startTime);
 
