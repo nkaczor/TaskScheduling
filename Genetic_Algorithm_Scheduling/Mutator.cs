@@ -13,6 +13,8 @@ namespace Genetic_Algorithm_Scheduling
         public Solution Mutate(Solution solutionToMutate)
         {
             _mutatedSolution = solutionToMutate.Clone();
+            foreach(var task in solutionToMutate.TaskOrder)
+            _mutatedSolution.TaskOrder.Add(task);
             _numberOfTask = solutionToMutate.TaskOrder.Count();
             int changes = (_numberOfTask*ChangeFactor)/100;
            
@@ -36,7 +38,7 @@ namespace Genetic_Algorithm_Scheduling
             
         }
 
-        public Mutator(int changeFactor=4)
+        public Mutator(int changeFactor=8)
         {
             ChangeFactor = changeFactor;
 

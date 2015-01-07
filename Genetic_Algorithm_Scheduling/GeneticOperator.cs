@@ -27,7 +27,7 @@ namespace Genetic_Algorithm_Scheduling
             while (numberOfChildren > 0)
             {
                 
-                if (_rnd.Next(100) < 8)
+                if (_rnd.Next(100) < 20)
                 {
                     mutateSomething();
                     numberOfChildren--; // z mutacji mamy jedno dziecko
@@ -35,7 +35,7 @@ namespace Genetic_Algorithm_Scheduling
                 else
                 {
                     crossoverSomething();
-                    numberOfChildren = numberOfChildren - 1; // z krzyżowania mamy 2 potomków
+                    numberOfChildren = numberOfChildren - 2; // z krzyżowania mamy 2 potomków
                 }
 
             }

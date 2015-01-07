@@ -60,13 +60,14 @@ namespace ACO
         private static int binarySearch(double[] tab, double value)
         {
 
+
             int left = 0, right = tab.Count() - 1;
             int mid = (left + right) / 2;
             while (left < right)
             {
-                mid = (left + right) / 2;
-                if (tab[mid] > value) right = mid;
-                else left = mid + 1;
+            mid = (left + right) / 2;
+               if (tab[mid] > value) right = mid;
+            else left = mid + 1;
 
 
             }
@@ -84,9 +85,9 @@ namespace ACO
 
 
 
-        public void CalculatePheromone(int bestSolutionEndTime)
+        public void CalculatePheromone()
         {
-            double amount = 1/(double) SolutionEndTime;
+            double amount = (1 / Math.Log((double)SolutionEndTime));
             for (int i = 0; i < Path.Count-1; i++)
             {
                 _pheremoneLevels[Path[i], Path[i + 1]] += amount;

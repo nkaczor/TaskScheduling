@@ -13,8 +13,9 @@ namespace ACO
             var ir = new InputReader(inputFile);
             Jobs = ir.FindJobs();
             Breaks = ir.FindBreaks();
-            NumberOfAgents = 30;
+           
             int numberOfJobs = Jobs.Count*2+1;
+            NumberOfAgents = numberOfJobs;
             PheremoneLevel= new double[numberOfJobs,numberOfJobs];
         }
 
@@ -26,9 +27,7 @@ namespace ACO
         public void Run()
         {
 
-            Console.WriteLine("Podaj liczbe sekund");
-            var seconds = Int32.Parse(Console.ReadLine());
-
+            
             PheremoneLevel.Initialize();
             for (int i = 0; i < PheremoneLevel.GetUpperBound(0); i++)
             {
@@ -47,7 +46,7 @@ namespace ACO
                 ants[i] = new Ant(Jobs.Count, rnd);
             }
 
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i <100; i++)
             {
 
 
@@ -64,22 +63,25 @@ namespace ACO
                 }
                 Console.WriteLine(bestSolution.EndTime);
 
-                foreach (var b in bestSolution.ProcessorTwo) Console.WriteLine(b.StartTime+" " + b.Length+" "+ b.Type+" "+ b.EndTime);
-                foreach (var b in bestSolution.ProcessorOne) Console.WriteLine(b.StartTime + " " + b.Length + " " + b.Type + " " + b.EndTime);
-                vaporization(0.5);
+                
+                vaporization(0.9);
                 foreach (var ant in ants)
                 {
-                    ant.CalculatePheromone(bestSolution.EndTime);
+                    ant.CalculatePheromone();
                 }
+            }
+
+            for (int i = 0; i < PheremoneLevel.GetUpperBound(0); i++)
+            {
+                for (int j = 0; j < PheremoneLevel.GetUpperBound(1); j++)
+                {
+                    Console.Write(PheremoneLevel[i, j]+" ");
+                }
+                Console.WriteLine();
             }
 
         }
         
-
-
-
-
-
     
 
         private void vaporization(double p)
@@ -89,6 +91,7 @@ namespace ACO
                 for (int j = 0; j < PheremoneLevel.GetUpperBound(1); j++)
                 {
                     PheremoneLevel[i, j] *= p;
+                    if (PheremoneLevel[i, j] < 0.0001) PheremoneLevel[i, j] = 0.0001;
                 }
             }
         }

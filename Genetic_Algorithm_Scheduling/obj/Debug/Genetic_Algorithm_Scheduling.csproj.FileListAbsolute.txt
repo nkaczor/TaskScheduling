@@ -10,3 +10,9 @@ C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\Genetic_Algorithm_Sch
 C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\Genetic_Algorithm_Scheduling\obj\Debug\Genetic_Algorithm_Scheduling.exe
 C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\Genetic_Algorithm_Scheduling\obj\Debug\Genetic_Algorithm_Scheduling.pdb
 C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\Genetic_Algorithm_Scheduling\obj\Debug\Genetic_Algorithm_Scheduling.csprojResolveAssemblyReference.cache
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\Genetic_Algorithm_Scheduling\bin\Debug\Genetic_Algorithm_Scheduling.exe.config
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\Genetic_Algorithm_Scheduling\obj\Debug\Genetic_Algorithm_Scheduling.exe
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\Genetic_Algorithm_Scheduling\obj\Debug\Genetic_Algorithm_Scheduling.pdb
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\Genetic_Algorithm_Scheduling\obj\Debug\Genetic_Algorithm_Scheduling.csprojResolveAssemblyReference.cache
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\Genetic_Algorithm_Scheduling\bin\Debug\Genetic_Algorithm_Scheduling.exe
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\Genetic_Algorithm_Scheduling\bin\Debug\Genetic_Algorithm_Scheduling.pdb

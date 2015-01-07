@@ -4,3 +4,9 @@ C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\ACO\bin\Debug\ACO.exe
 C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\ACO\bin\Debug\ACO.pdb
 C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\ACO\obj\Debug\ACO.exe
 C:\Users\Natalia\Source\Repos\Genetic-Algorithm-Scheduling\ACO\obj\Debug\ACO.pdb
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\ACO\bin\Debug\ACO.exe.config
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\ACO\obj\Debug\ACO.exe
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\ACO\obj\Debug\ACO.pdb
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\ACO\obj\Debug\ACO.csprojResolveAssemblyReference.cache
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\ACO\bin\Debug\ACO.exe
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\ACO\bin\Debug\ACO.pdb

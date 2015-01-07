@@ -11,7 +11,7 @@ namespace InputGenerator
         static void Main(string[] args)
         {
            Generator gen = new Generator();
-            gen.Generate(10,20,"test.in");
+            gen.Generate(200,250,"test.in");
             Console.Write("OK");
             Console.ReadLine();
 

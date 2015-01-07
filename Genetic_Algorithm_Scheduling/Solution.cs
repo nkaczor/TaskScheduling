@@ -16,7 +16,7 @@ namespace Genetic_Algorithm_Scheduling
 
         public Solution(SortedSet<Interval> breaks, List<Job> jobs)
         {
-            ProcessorOne = new SortedSet<Interval>();
+            ProcessorOne = new SortedSet<inte;rvalnterval>();
             ProcessorTwo = new SortedSet<Interval>();
             TaskOrder = new List<int>();
             _breaks = breaks;
@@ -91,10 +91,7 @@ namespace Genetic_Algorithm_Scheduling
         {
             var newSolution = new Solution(_breaks, _jobs);
             newSolution.TaskOrder = new List<int>();
-            foreach (var task in TaskOrder)
-            {
-                newSolution.TaskOrder.Add(task);
-            }
+
             return newSolution;
         }
 
@@ -119,6 +116,7 @@ namespace Genetic_Algorithm_Scheduling
             SortedSet<Interval> first;
 
             if (job.FirstProcessor == Job.Processor.One)
+
             {
                 first = ProcessorOne;
             }
@@ -162,6 +160,7 @@ namespace Genetic_Algorithm_Scheduling
                     TaskOrder[i] = -it;
                 }
             }
+}
         //    int amount=TaskOrder.Count;
         //    var first = new bool[_jobs.Count + 1];
         //    int i=0;
@@ -187,6 +186,6 @@ namespace Genetic_Algorithm_Scheduling
         //        else i++;
         //}
            
-        }
-    }
+        
+    
 }

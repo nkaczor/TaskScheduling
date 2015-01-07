@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Genetic_Algorithm_Scheduling
 {
@@ -13,13 +14,13 @@ namespace Genetic_Algorithm_Scheduling
             rnd = new Random();
         }
 
-        public Solution Child1 { get; set; }
-        public Solution Child2 { get; set; }
+        public Solution Parent1 { get; set; }
+        public Solution Parent2 { get; set; }
 
         public void Initialize(Solution parent1, Solution parent2)
         {
-            Child1 = parent1.Clone();
-            Child2 = parent2.Clone();
+            Parent1 = parent1;
+            Parent2 = parent2;
         }
 
         public void DoCrossover(out Solution child1, out Solution child2)
@@ -43,45 +44,74 @@ namespace Genetic_Algorithm_Scheduling
             //Child2.TaskOrder.RemoveRange(start, length);
             //Child2.TaskOrder.InsertRange(index, listToAdd);
 
-            int numberOfOperation = Child1.TaskOrder.Count;
-            state = new bool[numberOfOperation];
-            state.Initialize();
-            reverseCycle = true;
-            for (int i = 0; i < numberOfOperation; i++)
-            {
-                if (state[i] == false) findCycle(i);
+            ////int numberOfOperation = Child1.TaskOrder.Count;
+            ////state = new bool[numberOfOperation];
+            ////state.Initialize();
+            ////reverseCycle = true;
+            ////for (int i = 0; i < numberOfOperation; i++)
+            ////{
+            ////    if (state[i] == false) findCycle(i);
 
+            ////}
+            ////Child1.CheckAndFix();
+            ////Child2.CheckAndFix();
+            /// 
+            var numberOfOperation = Parent1.TaskOrder.Count;
+            int interceptPoint = rnd.Next((int) (0.1*numberOfOperation), (int)( 0.9*numberOfOperation));
+
+            child1 = Parent1.Clone();
+            child2 = Parent2.Clone();
+            child1.TaskOrder.InsertRange(0,Parent1.TaskOrder.GetRange(0, interceptPoint));
+           
+            SortedDictionary<int, int> child1Order=new SortedDictionary<int, int>();
+            SortedDictionary<int, int> child2Order= new SortedDictionary<int, int>();
+            foreach (var task in Parent1.TaskOrder.GetRange(interceptPoint, numberOfOperation - interceptPoint))
+            {
+                child1Order.Add(Parent2.TaskOrder.FindIndex(x => x == task), task);
             }
-            Child1.CheckAndFix();
-            Child2.CheckAndFix();
-            child1 = Child1;
-            child2 = Child2;
+            foreach (var t in child1Order)
+            {
+                child1.TaskOrder.Add(t.Value);                
+            }
+            foreach (var task in Parent2.TaskOrder.GetRange(0, interceptPoint))
+            {
+                child2Order.Add(Parent1.TaskOrder.FindIndex(x => x == task), task);
+            }
+            foreach (var t in child2Order)
+            {
+                child2.TaskOrder.Add(t.Value);
+            }
+            child2.TaskOrder.InsertRange(child2.TaskOrder.Count,
+               Parent2.TaskOrder.GetRange(interceptPoint, numberOfOperation - interceptPoint));
+
+
+
         }
 
-        private void findCycle(int start)
-        {
-            var old_i = start;
-            var value = Child2.TaskOrder[old_i];
-            var i = Child1.TaskOrder.FindIndex(x => x == value);
-            if (reverseCycle) swapNum(old_i);
-            state[start] = true;
-            while (i != -1 && i != start) // -1 dla cyklow z przekrecaniem (nigdy nie osiagnie startu)
-            {
-                state[i] = true;
-                old_i = i;
-                value = Child2.TaskOrder[old_i];
-                i = Child1.TaskOrder.FindIndex(x => x == value);
-                if (reverseCycle) swapNum(old_i);
-            }
+        //private void findCycle(int start)
+        //{
+        //    var old_i = start;
+        //    var value = Child2.TaskOrder[old_i];
+        //    var i = Child1.TaskOrder.FindIndex(x => x == value);
+        //    if (reverseCycle) swapNum(old_i);
+        //    state[start] = true;
+        //    while (i != -1 && i != start) // -1 dla cyklow z przekrecaniem (nigdy nie osiagnie startu)
+        //    {
+        //        state[i] = true;
+        //        old_i = i;
+        //        value = Child2.TaskOrder[old_i];
+        //        i = Child1.TaskOrder.FindIndex(x => x == value);
+        //        if (reverseCycle) swapNum(old_i);
+        //    }
             
-            reverseCycle = !reverseCycle;
-        }
+        //    reverseCycle = !reverseCycle;
+        //}
 
-        private void swapNum(int i)
-        {
-            var tempswap = Child1.TaskOrder[i];
-            Child1.TaskOrder[i] = Child2.TaskOrder[i];
-            Child2.TaskOrder[i] = tempswap;
-        }
+        //private void swapNum(int i)
+        //{
+        //    var tempswap = Child1.TaskOrder[i];
+        //    Child1.TaskOrder[i] = Child2.TaskOrder[i];
+        //    Child2.TaskOrder[i] = tempswap;
+        //}
     }
 }

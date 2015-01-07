@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ACO
@@ -7,134 +8,70 @@ namespace ACO
     {
         private readonly SortedSet<Interval> _breaks;
         private readonly List<Job> _jobs;
-
+        private int[] _firstEndsAt; 
         public Solution()
         {
         }
 
         public Solution(SortedSet<Interval> breaks, List<Job> jobs)
         {
-            ProcessorOne = new SortedSet<Interval>();
-            ProcessorTwo = new SortedSet<Interval>();
-
+            ProcessorOne = 0;
+            ProcessorTwo = 0;
+            
             _breaks = breaks;
             _jobs = jobs;
-            foreach (var interval in breaks)
-            {
-                ProcessorOne.Add(interval);
-                ProcessorTwo.Add(interval);
-            }
+             _firstEndsAt=new int[jobs.Count];
+           
         }
-
-        public SortedSet<Interval> ProcessorOne { get; set; }
-        public SortedSet<Interval> ProcessorTwo { get; set; }
         public List<int> TaskOrder { get; set; }
+        public int ProcessorOne { get; set; }
+        public int ProcessorTwo { get; set; }
+        
         public int EndTime { get; set; }
 
-        private void addSecondOperation(Job job, SortedSet<Interval> second, int startTimeForSecond)
+        private void addSecondOperation(Job job, ref int second, int startTimeForSecond)
         {
-            var last = second.LastOrDefault(x => x.Type == Interval.TypeOfInterval.Task);
-            var lastTime = (last == null) ? 0 : last.EndTime;
-            lastTime = (lastTime > startTimeForSecond) ? lastTime : startTimeForSecond;
-            var candidate =
-                second.FirstOrDefault(
-                    x => x.EndTime >= lastTime &&
-                         x.Type == Interval.TypeOfInterval.Free &&
-                         (x.StartTime > lastTime && x.EndTime - x.StartTime >= job.SecondTime ||
-                          x.StartTime <= lastTime && x.EndTime - lastTime >= job.SecondTime));
+            int startTime = (second>startTimeForSecond)?second:startTimeForSecond;
+          
+            Interval nearestBreak = _breaks.FirstOrDefault(x => x.StartTime >= startTime);
 
-            if (candidate == null) //dodajemy na koniec
+            while (nearestBreak != null && nearestBreak.StartTime - startTime < job.SecondTime)
             {
-                var startTime = second.Last().EndTime;
-                var length = job.SecondTime;
-                second.Add(new Interval(Interval.TypeOfInterval.Task, length, startTime));
-            }
-            else
-            {
-                int endTime;
-                second.Remove(candidate);
-                Interval taskInterval;
-                if (lastTime > candidate.StartTime)
-                {
-                    //ewentualnie dodac free
-                    endTime = lastTime + job.FirstTime;
-                    taskInterval = new Interval(Interval.TypeOfInterval.Task, job.SecondTime, lastTime);
-                }
-                else
-                {
-                    endTime = candidate.StartTime + job.FirstTime;
-                    taskInterval = new Interval(Interval.TypeOfInterval.Task, job.SecondTime, candidate.StartTime);
-                }
 
 
-                second.Add(taskInterval);
 
-                if (candidate.EndTime > endTime)
-                    second.Add(
-                        new Interval(Interval.TypeOfInterval.Free, candidate.EndTime - endTime, endTime)
-                        );
+                startTime = nearestBreak.EndTime;
+                nearestBreak = _breaks.FirstOrDefault(x => x.StartTime >= startTime);
 
             }
+           second = startTime + job.SecondTime;
+
+
+            
         }
         
 
-        private int addFirstOperation(Job job, SortedSet<Interval> first)
+        private int addFirstOperation(Job job, ref int first)
         {
-            int endTime;
-            var last = first.LastOrDefault(x => x.Type == Interval.TypeOfInterval.Task);
-            var lastTime = (last == null) ? 0 : last.EndTime;
+            int startTime = first;
+            Interval nearestBreak= _breaks.FirstOrDefault(x => x.StartTime >= startTime);
 
-            var candidate =
-                first.FirstOrDefault(x =>
-                    x.EndTime >= lastTime &&
-                    x.Type == Interval.TypeOfInterval.Free &&
-                    (x.StartTime > lastTime && x.EndTime - x.StartTime >= job.FirstTime ||
-                     x.StartTime <= lastTime && x.EndTime - lastTime >= job.FirstTime));
-
-            if (candidate == null)
+            while (nearestBreak != null && nearestBreak.StartTime - startTime < job.FirstTime)
             {
-                var startTime = first.Last().EndTime;
-                var length = job.FirstTime;
-                first.Add(new Interval(Interval.TypeOfInterval.Task, length, startTime));
-                endTime = startTime + length;
+
+
+
+                startTime = nearestBreak.EndTime;
+                nearestBreak = _breaks.FirstOrDefault(x => x.StartTime >= startTime);
+
             }
-            else
-            {
-                first.Remove(candidate);
-                Interval taskInterval;
-                if (lastTime > candidate.StartTime)
-                {
-                    //ewentualnie dodac free
-                    endTime = lastTime + job.FirstTime;
-                    taskInterval = new Interval(Interval.TypeOfInterval.Task, job.FirstTime, lastTime);
-                }
-                else
-                {
-                    endTime = candidate.StartTime + job.FirstTime;
-                    taskInterval = new Interval(Interval.TypeOfInterval.Task, job.FirstTime, candidate.StartTime);
-                }
+            first = startTime + job.FirstTime;
 
-
-                first.Add(taskInterval);
-
-                if (candidate.EndTime > endTime)
-                    first.Add(
-                        new Interval(Interval.TypeOfInterval.Free, candidate.EndTime - endTime, endTime)
-                        );
-            }
-            return endTime;
+            
+            return first;
         }
 
-        public Solution Clone()
-        {
-            var newSolution = new Solution(_breaks, _jobs);
-            newSolution.TaskOrder = new List<int>();
-            foreach (var task in TaskOrder)
-            {
-                newSolution.TaskOrder.Add(task);
-            }
-            return newSolution;
-        }
+       
 
         public void GenerateProcessorsTimeline()
         {
@@ -145,44 +82,50 @@ namespace ACO
                 if (task <= _jobs.Count) AddFirst(_jobs[task - 1]);
                 else AddSecond(_jobs[task - _jobs.Count - 1]);
             }
-            var endTime1 = ProcessorOne.Last(x => x.Type == Interval.TypeOfInterval.Task).EndTime;
-            var endTime2 = ProcessorTwo.Last(x => x.Type == Interval.TypeOfInterval.Task).EndTime;
-            EndTime = (endTime1 > endTime2) ? endTime1 : endTime2;
+            EndTime = (ProcessorOne > ProcessorTwo) ? ProcessorOne : ProcessorTwo;
         }
 
         public void AddFirst(Job job)
         {
             //TaskOrder.Add(job.Id);
 
-            SortedSet<Interval> first;
+            int first;
 
             if (job.FirstProcessor == Job.Processor.One)
             {
                 first = ProcessorOne;
+                job.FirstEndsAt = addFirstOperation(job, ref first);
+                ProcessorOne = first;
             }
             else
             {
                 first = ProcessorTwo;
+                job.FirstEndsAt = addFirstOperation(job, ref first);
+                ProcessorTwo = first;
             }
 
-            job.FirstEndsAt = addFirstOperation(job, first);
+           
         }
 
         public void AddSecond(Job job)
         {
             //TaskOrder.Add(-job.Id);
-            SortedSet<Interval> second;
+            int second;
             if (job.FirstProcessor == Job.Processor.One)
             {
                 second = ProcessorTwo;
+                addSecondOperation(job, ref second, job.FirstEndsAt);
+                ProcessorTwo = second;
             }
             else
             {
                 second = ProcessorOne;
+                addSecondOperation(job, ref second, job.FirstEndsAt);
+                ProcessorOne = second;
             }
 
 
-            addSecondOperation(job, second, job.FirstEndsAt);
+            
         }
     }
 }
