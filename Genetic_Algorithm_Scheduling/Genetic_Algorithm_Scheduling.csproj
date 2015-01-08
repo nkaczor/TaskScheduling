@@ -41,7 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CrossoverOperator.cs" />
+    <Compile Include="C:\Users\Natalia\Desktop\CrossoverOperator.cs">
+      <Link>CrossoverOperator.cs</Link>
+    </Compile>
     <Compile Include="GeneticAlgorithm.cs" />
     <Compile Include="GeneticOperator.cs" />
     <Compile Include="InputReader.cs" />

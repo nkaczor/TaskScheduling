@@ -23,28 +23,10 @@ namespace ACO
         public List<Job> Jobs { get; set; }
         public SortedSet<Interval> Breaks { get; set; }
         public int NumberOfAgents { get; set; }
-
+        private Ant[] _ants; 
         public void Run()
         {
-
-            
-            PheremoneLevel.Initialize();
-            for (int i = 0; i < PheremoneLevel.GetUpperBound(0); i++)
-            {
-                for (int j = 0; j < PheremoneLevel.GetUpperBound(1); j++)
-                {
-                    PheremoneLevel[i, j] = 0.1;
-                }
-            }
-
-
-            Ant[] ants = new Ant[NumberOfAgents];
-            Random rnd = new Random();
-            for (int i = 0; i < ants.Length; i++)
-
-            {
-                ants[i] = new Ant(Jobs.Count, rnd);
-            }
+            initialize();
 
             for (int i = 0; i <100; i++)
             {
@@ -52,7 +34,7 @@ namespace ACO
 
 
                 Solution bestSolution = null;
-                foreach (var ant in ants)
+                foreach (var ant in _ants)
                 {
                     ant.Go(PheremoneLevel);
                     Solution antSolution = new Solution(Breaks, Jobs);
@@ -64,25 +46,34 @@ namespace ACO
                 Console.WriteLine(bestSolution.EndTime);
 
                 
-                vaporization(0.9);
-                foreach (var ant in ants)
+                vaporization(0.99);
+                foreach (var ant in _ants)
                 {
                     ant.CalculatePheromone();
                 }
             }
+        }
 
+        private void initialize()
+        {
             for (int i = 0; i < PheremoneLevel.GetUpperBound(0); i++)
             {
                 for (int j = 0; j < PheremoneLevel.GetUpperBound(1); j++)
                 {
-                    Console.Write(PheremoneLevel[i, j]+" ");
+                    PheremoneLevel[i, j] = 0.1;
                 }
-                Console.WriteLine();
             }
 
+
+            _ants = new Ant[NumberOfAgents];
+            Random rnd = new Random();
+            for (int i = 0; i < _ants.Length; i++)
+
+            {
+                _ants[i] = new Ant(Jobs.Count, rnd);
+            }
         }
-        
-    
+
 
         private void vaporization(double p)
         {

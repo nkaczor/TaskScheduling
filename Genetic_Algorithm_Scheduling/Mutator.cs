@@ -38,7 +38,7 @@ namespace Genetic_Algorithm_Scheduling
             
         }
 
-        public Mutator(int changeFactor=8)
+        public Mutator(int changeFactor=6)
         {
             ChangeFactor = changeFactor;
 

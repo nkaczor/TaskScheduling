@@ -17,7 +17,7 @@ namespace Genetic_Algorithm_Scheduling
             _oldSolutions = oldSolutions;
             _newSolutions = new List<Solution>();
             _rnd = new Random();
-            _mutator = new Mutator(12);
+            _mutator = new Mutator();
             _crossoverOperator=new CrossoverOperator();
         }
         public List<Solution> CreateNewPopulation(int numberOfChildren)

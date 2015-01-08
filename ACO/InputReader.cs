@@ -54,9 +54,7 @@ namespace ACO
                     string[] intervalInfo = tmp.Split(';');
                     int length = Convert.ToInt32(intervalInfo[1]);
                     int startTime = Convert.ToInt32(intervalInfo[2]);
-                    if (startFree < startTime)
-                        intervals.Add(new Interval(Interval.TypeOfInterval.Free, startTime - startFree, startFree));
-                    intervals.Add(new Interval(Interval.TypeOfInterval.Break, length, startTime));
+                    intervals.Add(new Interval(length, startTime));
                     startFree = startTime + length;
 
                 }

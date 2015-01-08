@@ -91,6 +91,7 @@ namespace ACO
             for (int i = 0; i < Path.Count-1; i++)
             {
                 _pheremoneLevels[Path[i], Path[i + 1]] += amount;
+                if (_pheremoneLevels[Path[i], Path[i + 1]] > 1) _pheremoneLevels[Path[i], Path[i + 1]] = 0.999;
             }
         }
     }

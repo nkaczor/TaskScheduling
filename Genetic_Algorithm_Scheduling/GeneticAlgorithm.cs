@@ -30,17 +30,14 @@ namespace Genetic_Algorithm_Scheduling
             {
                 
                 var roulette = new Roulette(Solutions);
-                Solutions = roulette.SpinTheWheel(30);
+                Solutions = roulette.SpinTheWheel(50);
                 var geneticOperator = new GeneticOperator(Solutions);
                
-                Solutions = geneticOperator.CreateNewPopulation(200);
+                Solutions = geneticOperator.CreateNewPopulation(400);
                 int min = Solutions.Min(sol => sol.EndTime);
                 Console.WriteLine(min);
 
-               // List<int> L = new List<int>();
-               // foreach (var k in Solutions.First(x => x.EndTime == min).TaskOrder) L.Add(k);
-                
-               // foreach (var b in L) Console.Write(b+ " ");
+               
                 Console.WriteLine();
 
             }

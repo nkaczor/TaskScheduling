@@ -13,12 +13,18 @@ namespace Genetic_Algorithm_Scheduling
         private List<Solution> _luckySolutions;
         private List<Solution> _solutions;
         private int _range;
-        
+
+        private int sortSolutionByEndTime(Solution sol1, Solution sol2)
+        {
+
+            return sol1.EndTime.CompareTo(sol2.EndTime);
+        }
         public Roulette(List<Solution> solutions)
         {
            
             Int32 maxEndTime = solutions.Max(s=>s.EndTime);
             _solutions = solutions;
+            _solutions.Sort(sortSolutionByEndTime);
             _luckySolutions=new List<Solution>();
             _fitnessLevels=new int[solutions.Count];
             _chosenOnes= new bool[solutions.Count];
@@ -40,7 +46,8 @@ namespace Genetic_Algorithm_Scheduling
         public List<Solution> SpinTheWheel(int amount)
         {
             var rnd= new Random();
-
+            getTop5();
+            amount = amount - 5;
             while (amount > 0)
             {
 
@@ -58,7 +65,16 @@ namespace Genetic_Algorithm_Scheduling
             return _luckySolutions;
         }
 
-         private static int binarySearch(int[] tab, int value)
+        private void getTop5()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                _luckySolutions.Add(_solutions[i]);
+                _chosenOnes[i] = true;
+            }
+        }
+
+        private static int binarySearch(int[] tab, int value)
          {
              
              int left = 0, right = tab.Count()-1;
