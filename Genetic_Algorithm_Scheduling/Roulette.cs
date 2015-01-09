@@ -25,6 +25,7 @@ namespace Genetic_Algorithm_Scheduling
             Int32 maxEndTime = solutions.Max(s=>s.EndTime);
             _solutions = solutions;
             _solutions.Sort(sortSolutionByEndTime);
+           
             _luckySolutions=new List<Solution>();
             _fitnessLevels=new int[solutions.Count];
             _chosenOnes= new bool[solutions.Count];
