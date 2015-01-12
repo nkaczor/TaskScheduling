@@ -15,7 +15,7 @@ namespace ACO
             Breaks = ir.FindBreaks();
            
             int numberOfJobs = Jobs.Count*2+1;
-            NumberOfAgents = numberOfJobs;
+            NumberOfAgents = 50;
             PheremoneLevel= new double[numberOfJobs,numberOfJobs];
         }
 
@@ -46,7 +46,7 @@ namespace ACO
                 Console.WriteLine(bestSolution.EndTime);
 
                 
-                vaporization(0.99);
+                vaporization(0.9);
                 foreach (var ant in _ants)
                 {
                     ant.CalculatePheromone();

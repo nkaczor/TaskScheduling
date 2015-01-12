@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 
 namespace Genetic_Algorithm_Scheduling
@@ -9,94 +8,79 @@ namespace Genetic_Algorithm_Scheduling
     {
         private readonly SortedSet<Interval> _breaks;
         private readonly List<Job> _jobs;
-
+        private bool[] isFirst; 
         public Solution()
         {
         }
 
         public Solution(SortedSet<Interval> breaks, List<Job> jobs)
         {
-            ProcessorOne = new SortedSet<inte;rvalnterval>();
-            ProcessorTwo = new SortedSet<Interval>();
-            TaskOrder = new List<int>();
+            ProcessorOne = 0;
+            ProcessorTwo = 0;
+            IdleTimeProcessorOne = 0;
+            IdleTimeProcessorTwo = 0;
+            TaskOrder=new List<int>();
             _breaks = breaks;
             _jobs = jobs;
-            foreach (var interval in breaks)
-            {
-                ProcessorOne.Add(interval);
-                ProcessorTwo.Add(interval);
-            }
-        }
+            isFirst= new bool[jobs.Count+1];
 
-        public SortedSet<Interval> ProcessorOne { get; set; }
-        public SortedSet<Interval> ProcessorTwo { get; set; }
+        }
         public List<int> TaskOrder { get; set; }
+        public int ProcessorOne { get; set; }
+        public int ProcessorTwo { get; set; }
+        public int IdleTimeProcessorOne { get; set; }
+        public int IdleTimeProcessorTwo { get; set; }
         public int EndTime { get; set; }
 
-        private void addSecondOperation(Job job, SortedSet<Interval> second, int startTimeForSecond)
+        private void addSecondOperation(Job job, ref int second,ref int idleTime, int startTimeForSecond)
         {
-            var candidate =
-                second.FirstOrDefault(
-                    x =>
-                        x.StartTime > startTimeForSecond && x.Type == Interval.TypeOfInterval.Free &&
-                        x.Length >= job.FirstTime);
-
-            if (candidate == null) //dodajemy na koniec
+            
+            int startTime = (second > startTimeForSecond) ? second : startTimeForSecond;
+            Interval nearestBreak = _breaks.FirstOrDefault(x => x.StartTime >= startTime);
+           
+            while (nearestBreak != null && nearestBreak.StartTime - startTime < job.SecondTime)
             {
-                var startTime = second.Last().EndTime;
-                var length = job.SecondTime;
-                second.Add(new Interval(Interval.TypeOfInterval.Task, length, startTime));
-            }
-            else
-            {
-                second.Remove(candidate);
-                second.Add(new Interval(Interval.TypeOfInterval.Task, job.SecondTime, candidate.StartTime));
+                idleTime += nearestBreak.StartTime - startTime;
 
-                if (candidate.EndTime > candidate.StartTime + job.SecondTime)
-                    second.Add(
-                        new Interval(Interval.TypeOfInterval.Free, candidate.Length - job.SecondTime,
-                            candidate.StartTime + job.SecondTime)
-                        );
+
+               startTime = nearestBreak.EndTime;
+               nearestBreak = _breaks.FirstOrDefault(x => x.StartTime >= startTime);
+
             }
+            second = startTime + job.SecondTime;
+
+
+
         }
 
-        private int addFirstOperation(Job job, SortedSet<Interval> first)
-        {
-            int endTime;
-            var candidate =
-                first.FirstOrDefault(x => x.Type == Interval.TypeOfInterval.Free && x.Length >= job.FirstTime);
 
-            if (candidate == null)
+        private int addFirstOperation(Job job, ref int first, ref int idleTime)
+        {
+            isFirst[job.Id] = true;
+            int startTime = first;
+            Interval nearestBreak = _breaks.FirstOrDefault(x => x.StartTime >= startTime);
+
+            while (nearestBreak != null && nearestBreak.StartTime - startTime < job.FirstTime)
             {
-                var startTime = first.Last().EndTime;
-                var length = job.FirstTime;
-                first.Add(new Interval(Interval.TypeOfInterval.Task, length, startTime));
-                endTime = startTime + length;
+                idleTime += nearestBreak.StartTime - startTime;
+
+
+                startTime = nearestBreak.EndTime;
+                nearestBreak = _breaks.FirstOrDefault(x => x.StartTime >= startTime);
+
             }
-            else
-            {
-                first.Remove(candidate);
-                var taskInterval = new Interval(Interval.TypeOfInterval.Task, job.FirstTime, candidate.StartTime);
-                first.Add(taskInterval);
-                endTime = candidate.StartTime + job.FirstTime;
-                if (candidate.EndTime > candidate.StartTime + job.FirstTime)
-                    first.Add(
-                        new Interval(Interval.TypeOfInterval.Free, candidate.Length - job.FirstTime, endTime)
-                        );
-            }
-            return endTime;
+            first = startTime + job.FirstTime;
+
+
+            return first;
         }
 
-        public Solution Clone()
-        {
-            var newSolution = new Solution(_breaks, _jobs);
-            newSolution.TaskOrder = new List<int>();
 
-            return newSolution;
-        }
 
         public void GenerateProcessorsTimeline()
         {
+            ProcessorOne = 0;
+            ProcessorTwo = 0;
             for (var i = 0; i < TaskOrder.Count; i++)
             {
                 // Console.WriteLine(i+" " + TaskOrder.Count);
@@ -104,48 +88,69 @@ namespace Genetic_Algorithm_Scheduling
                 if (task > 0) AddFirst(_jobs[task - 1]);
                 else AddSecond(_jobs[-task - 1]);
             }
-            var endTime1 = ProcessorOne.Last(x => x.Type == Interval.TypeOfInterval.Task).EndTime;
-            var endTime2 = ProcessorTwo.Last(x => x.Type == Interval.TypeOfInterval.Task).EndTime;
-            EndTime = (endTime1 > endTime2) ? endTime1 : endTime2;
+            EndTime = (ProcessorOne > ProcessorTwo) ? ProcessorOne : ProcessorTwo;
+            
         }
 
         public void AddFirst(Job job)
         {
             //TaskOrder.Add(job.Id);
 
-            SortedSet<Interval> first;
+            int first, firstIdle;
 
             if (job.FirstProcessor == Job.Processor.One)
-
             {
                 first = ProcessorOne;
+                firstIdle = IdleTimeProcessorOne;
+                job.FirstEndsAt = addFirstOperation(job, ref first, ref firstIdle);
+                ProcessorOne = first;
+                IdleTimeProcessorOne = firstIdle;
             }
             else
             {
                 first = ProcessorTwo;
+                firstIdle = IdleTimeProcessorTwo;
+                job.FirstEndsAt = addFirstOperation(job, ref first, ref firstIdle);
+                ProcessorTwo = first;
+                IdleTimeProcessorTwo = firstIdle;
             }
 
-            job.FirstEndsAt = addFirstOperation(job, first);
+
         }
 
         public void AddSecond(Job job)
         {
             //TaskOrder.Add(-job.Id);
-            SortedSet<Interval> second;
+            int second, secondIdle;
             if (job.FirstProcessor == Job.Processor.One)
             {
                 second = ProcessorTwo;
+                secondIdle = IdleTimeProcessorTwo;
+                addSecondOperation(job, ref second, ref secondIdle, job.FirstEndsAt);
+                ProcessorTwo = second;
+                IdleTimeProcessorTwo = secondIdle;
             }
             else
             {
                 second = ProcessorOne;
+                secondIdle = IdleTimeProcessorOne;
+                addSecondOperation(job, ref second, ref secondIdle,job.FirstEndsAt);
+                ProcessorOne = second;
+                IdleTimeProcessorOne = secondIdle;
+
             }
 
 
-            addSecondOperation(job, second, job.FirstEndsAt);
-        }
 
-        public void CheckAndFix()
+        }
+        public Solution Clone()
+        {
+            var newSolution = new Solution(_breaks, _jobs);
+            
+           
+            return newSolution;
+        }
+         public void CheckAndFix()
         {
             var first = new bool[_jobs.Count + 1];
             first.Initialize();
@@ -160,32 +165,7 @@ namespace Genetic_Algorithm_Scheduling
                     TaskOrder[i] = -it;
                 }
             }
-}
-        //    int amount=TaskOrder.Count;
-        //    var first = new bool[_jobs.Count + 1];
-        //    int i=0;
-        //    while(i<TaskOrder.Count)
-        //    {
-        //        var it = TaskOrder[i];
-        //        if (it > 0 && first[it] == false) {first[it] = true;
-        //            i++;
-        //        }
+    }
 
-        //        else if (it < 0 && first[-it] == false)
-        //        {
-        //            TaskOrder.Remove(it);
-        //            first[-it] = true;
-
-        //        }
-        //        else if (it > 0)
-        //        {
-        //            TaskOrder.Insert(i + 1, -it);
-        //            i++;
-        //            first[it] = true;
-        //        }
-        //        else i++;
-        //}
-           
-        
-    
+    }
 }

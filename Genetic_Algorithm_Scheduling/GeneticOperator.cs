@@ -17,7 +17,7 @@ namespace Genetic_Algorithm_Scheduling
             _oldSolutions = oldSolutions;
             _newSolutions = new List<Solution>();
             _rnd = new Random();
-            _mutator = new Mutator();
+            _mutator = new Mutator(20);
             _crossoverOperator=new CrossoverOperator();
         }
         public List<Solution> CreateNewPopulation(int numberOfChildren)
@@ -27,7 +27,7 @@ namespace Genetic_Algorithm_Scheduling
             while (numberOfChildren > 0)
             {
                 
-                if (_rnd.Next(100) < 20)
+                if (_rnd.Next(100) < 40)
                 {
                     mutateSomething();
                     numberOfChildren--; // z mutacji mamy jedno dziecko
