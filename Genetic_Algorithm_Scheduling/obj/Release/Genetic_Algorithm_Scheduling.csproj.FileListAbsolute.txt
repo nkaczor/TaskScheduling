@@ -1,0 +1,5 @@
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\Genetic_Algorithm_Scheduling\bin\Release\Genetic_Algorithm_Scheduling.exe.config
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\Genetic_Algorithm_Scheduling\bin\Release\Genetic_Algorithm_Scheduling.exe
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\Genetic_Algorithm_Scheduling\bin\Release\Genetic_Algorithm_Scheduling.pdb
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\Genetic_Algorithm_Scheduling\obj\Release\Genetic_Algorithm_Scheduling.exe
+D:\MyDocs\Visual Studio 2013\Projects\Task-Scheduling\Genetic_Algorithm_Scheduling\obj\Release\Genetic_Algorithm_Scheduling.pdb
